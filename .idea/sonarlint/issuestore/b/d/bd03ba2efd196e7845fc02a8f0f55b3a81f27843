@@ -1,0 +1,5 @@
+
+”	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(”î“‹üÿÿÿÿ8Ôû–‘ç1J$2d8e10d5-c6ec-4bc6-9400-3901cfa5c145
+œ	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ž’Ð„8×û–‘ç1J$c5647938-d074-4453-a90f-798113c0eef0
+‚
+java:S1118":Add a private constructor to hide the implicit public one.(”î“‹üÿÿÿÿ8éû–‘ç1J$91d48209-0920-42cd-acd1-a6fff3642a5f
