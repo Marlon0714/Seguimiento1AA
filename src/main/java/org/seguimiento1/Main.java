@@ -10,6 +10,8 @@ import org.seguimiento1.Ejercicio4_4.Version_Iterativa4_4;
 import org.seguimiento1.Ejercicio4_4.Version_Recursiva4_4;
 import org.seguimiento1.Ejercicio4_5.Version_Iterativa4_5;
 import org.seguimiento1.Ejercicio4_5.Version_Recursiva4_5;
+import org.segumiento1.Exceptions.PalabraInvalidaException;
+import org.segumiento1.Exceptions.TamanoMatrizInvalidoException;
 
 import java.util.List;
 import java.util.Random;
@@ -59,44 +61,13 @@ public class Main {
      * Mide el tiempo de ejecución y muestra los resultados.
      */
     private static void testProblema41() {
-        int tamaño = 0;
-        boolean entradaValida = false;
-
-        while (!entradaValida) {
-            try {
-                String input = JOptionPane.showInputDialog(null, "Ingrese el tamaño n de la matriz cuadrada n*n \n"
-                        + "Este tamaño es para el ejercicio 4.1");
-
-                if (input == null) {
-                    System.err.println("Error: No se ingresó ningún valor. Por favor, intente de nuevo.");
-                    continue;
-                }
-
-                input = input.trim(); // Elimina espacios en blanco al inicio y al final de la entrada de datos por parte del user
-                if (input.isEmpty() || !input.matches("\\d+")) { // Verifica si la entrada es un numero entero
-                    System.err.println("Error: Ingrese un número entero válido para el tamaño de la matriz.");
-                    continue;
-                }
-
-                tamaño = Integer.parseInt(input);
-                if (tamaño <= 1) {
-                    System.err.println("Error: El tamaño de la matriz debe ser un número entero mayor que 1.");
-                    continue;
-                }
-
-                entradaValida = true;
-            } catch (NumberFormatException e) { // Excepcion en caso de que no sea un numero entero
-                System.err.println("Error: Ingrese un número entero válido para el tamaño de la matriz.");
-            } catch (Exception e) {
-                System.err.println("Error inesperado: " + e.getMessage());
-            }
-        }
+        int tamaño = obtenerTamanoMatriz();
 
         try {
             long inicio = System.nanoTime();
             int[][] resultadoIterativo = Version_Iterativa4_1.llenarMatrizEnEspiralIterativo(tamaño);
             long fin = System.nanoTime();
-            System.out.println("Tiempo de ejecución del problema 4.1 (Iterativo): " + (fin - inicio) + "  ns");
+            System.out.println("Tiempo de ejecución del problema 4.1 (Iterativo): " + (fin - inicio) + " ns");
 
             int[][] matrizRecursiva = new int[tamaño][tamaño];
             inicio = System.nanoTime();
@@ -120,38 +91,7 @@ public class Main {
      * Mide el tiempo de ejecución y muestra los resultados.
      */
     private static void testProblema42() {
-        int n = 0;
-        boolean entradaValida = false;
-
-        while (!entradaValida) {
-            try {
-                String input = JOptionPane.showInputDialog(null, "Ingrese el tamaño de la matriz cuadrada (n x n) \n"
-                        + "Este tamaño es para la matriz del punto 4.2:");
-
-                if (input == null) {
-                    System.err.println("Error: No se ingresó ningún valor. Por favor, intente de nuevo.");
-                    continue;
-                }
-
-                input = input.trim();// Elimina espacios en blanco al inicio y al final de la entrada de datos por parte del user
-                if (input.isEmpty() || !input.matches("\\d+")) {// Verifica si la entrada es un numero entero
-                    System.err.println("Error: Ingrese un número entero válido para el tamaño de la matriz.");
-                    continue;
-                }
-
-                n = Integer.parseInt(input);
-                if (n <= 1) {
-                    System.err.println("Error: El tamaño de la matriz debe ser un número entero mayor que 1.");
-                    continue;
-                }
-
-                entradaValida = true;
-            } catch (NumberFormatException e) {
-                System.err.println("Error: Ingrese un número entero válido para el tamaño de la matriz.");
-            } catch (Exception e) {
-                System.err.println("Error inesperado: " + e.getMessage());
-            }
-        }
+        int n = obtenerTamanoMatriz(); // tamaño de la matriz
 
         try {
             int[][] matriz = new int[n][n];
@@ -159,18 +99,19 @@ public class Main {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     double valor = Math.random() + 1;
-                    int valorEntero = (int) (valor * 7);
-                    matriz[i][j] = valorEntero;
+                    int valorEntero = (int) (valor * 5);
+                    matriz[i][j] = valorEntero; // Matriz aleatoria de prueba
+                    // matriz[i][j] = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese valores a la matriz")); // En caso de que el usuario quiera llenar la matriz
                 }
             }
 
             // Mostrar la matriz de prueba de forma alineada
             System.out.println("Matriz ingresada de prueba:");
-            imprimirMatriz(matriz);
+            imprimirMatriz(matriz); 
 
-            long inicio = System.nanoTime();// Obtiene el tiempo inicial de ejecucion del programa
+            long inicio = System.nanoTime();
             int[][] resultadoIterativo = Version_Iterativa4_2.encontrarMultiplicadorParaCuadradoPerfectoIterativo(matriz);
-            long fin = System.nanoTime();// Obtiene el tiempo inicial de ejecucion del programa
+            long fin = System.nanoTime();
             System.out.println("Tiempo de ejecución del problema 4.2 (Iterativo): " + (fin - inicio) + " ns");
 
             inicio = System.nanoTime();
@@ -188,26 +129,61 @@ public class Main {
             System.err.println("Error inesperado: " + e.getMessage());
         }
     }
-
+    
     /**
      * Este método prueba la versión iterativa y recursiva del Problema 4.3.
      * Mide el tiempo de ejecución y muestra los resultados.
      */
     private static void testProblema43() {
-        String[][] matriz = {{"cama", "acma"}, {"oso", "roso"}, {"tela", "late"}};
+        int n = obtenerTamanoMatriz(); // Número de filas de la matriz
+        String[][] matriz = new String[n][2]; 
+
+        // Solicitar al usuario que ingrese las palabras para cada fila de la matriz
+        for (int i = 0; i < n; i++) {
+            System.out.println("Ingrese la palabra para la fila " + (i + 1) + "\n" + "Palabras con la letra 'ñ' y tildes '´' no están permitidas");
+            Scanner scanner = new Scanner(System.in);
+
+            try {
+                System.out.print("Por favor, escribe la palabra para la columna 1: ");
+                String palabra1 = scanner.next();
+                if (!palabra1.matches("[a-zA-Z]+") || palabra1.length() < 3 || palabra1.contains(" ") || palabra1.contains("ñ")) {
+                    throw new PalabraInvalidaException("Error: La palabra no debe contener números y al menos tres caracteres.");
+                }
+
+                System.out.print("Por favor, escribe la palabra para la columna 2: ");
+                String palabra2 = scanner.next();
+                if (!palabra2.matches("[a-zA-Z]+") || palabra2.length() < 3 || palabra2.contains(" ") || palabra2.contains("ñ")) {
+                    throw new PalabraInvalidaException("Error: La palabra no debe contener números y al menos tres caracteres.");
+                }
+
+                matriz[i][0] = palabra1;
+                matriz[i][1] = palabra2;
+            } catch (PalabraInvalidaException e) {
+                System.err.println(e.getMessage());
+                i--; // Repetir la misma fila si se produce un error
+            }
+        }
+        imprimirMatrizCadena(matriz);
         long inicio = System.nanoTime();
         List<Integer> resultadoIterativo = Version_Iterativa4_3.encontrarPalabrasSimilaresIterativo(matriz);
         long fin = System.nanoTime();
-        System.out.println("Tiempo de ejecución del problema 4.3 (Iterativo): " + (fin - inicio) + " ns");
-
+        System.out.println("\n"+"Tiempo de ejecución del problema 4.3 (Iterativo): " + (fin - inicio) + " ns");
         inicio = System.nanoTime();
         List<Integer> resultadoRecursivo = Version_Recursiva4_3.encontrarPalabrasSimilaresRecursivo(matriz);
         fin = System.nanoTime();
         System.out.println("Tiempo de ejecución del problema 4.3 (Recursivo): " + (fin - inicio) + " ns");
-
-        // Impresión de los resultados
-        System.out.println("Resultado Iterativo: " + resultadoIterativo);
-        System.out.println("Resultado Recursivo: " + resultadoRecursivo);
+        // Verificar si ninguna palabra es igual a otra en la matriz
+        if(resultadoIterativo.isEmpty() && resultadoRecursivo.isEmpty()) {
+            System.out.println("La matriz está vacía, ninguna palabra es igual a otra.");
+        } else {
+            // Impresión de los resultados
+            System.out.println("Resultado Iterativo: \n"
+                    + "las palabras con las mismas letras y el mismo tamaño se encuentran en la posición " + resultadoIterativo
+                    + " de la matriz");
+            System.out.println("Resultado Recursivo: \n" 
+                    + "las palabras con las mismas letras y el mismo tamaño se encuentran en la posición " + resultadoRecursivo
+                    + " de la matriz");
+        }
     }
 
     /**
@@ -260,6 +236,53 @@ public class Main {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 System.out.printf("%5d", matriz[i][j]); // Ajusta el ancho de cada elemento según tus necesidades
+            }
+            System.out.println(); // Salto de línea para imprimir la siguiente fila
+        }
+    } 
+    
+    /*
+     * Este método pide al usuario el tamaño que quiere para las matrices
+     * y maneja los tipos de excepciones que pueden existir al ingresar algún valor
+     */
+    private static int obtenerTamanoMatriz() {
+        int tamaño = 0;
+        boolean entradaValida = false;
+
+        while (!entradaValida) {
+            try {
+                String input = JOptionPane.showInputDialog(null, "Ingrese el tamaño n de la matriz");
+
+                if (input == null) {
+                    throw new TamanoMatrizInvalidoException("No se ingresó ningún valor. Por favor, intente de nuevo.");
+                }
+
+                input = input.trim();
+                if (input.isEmpty() || !input.matches("([2-9]|[12]\\d|30)")) { // Modificación en la expresión regular para aceptar valores entre 2 y 30
+                    throw new TamanoMatrizInvalidoException("Ingrese un número entero válido para el tamaño de la matriz entre 2 y 30.");
+                }
+
+                tamaño = Integer.parseInt(input);
+                entradaValida = true;
+            } catch (TamanoMatrizInvalidoException e) {
+                System.err.println("Error en el tamaño de la matriz: " + e.getMessage());
+            } catch (NumberFormatException e) {
+                System.err.println("Error: Ingrese un número entero válido para el tamaño de la matriz.");
+            } catch (Exception e) {
+                System.err.println("Error inesperado: " + e.getMessage());
+            }
+        }
+
+        return tamaño;
+    }
+
+
+    
+    private static void imprimirMatrizCadena(String[][] matriz) {
+        System.out.println("Matriz ingresada:");
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                System.out.printf("%-15s", matriz[i][j]); // Ajusta el ancho de cada elemento según tus necesidades
             }
             System.out.println(); // Salto de línea para imprimir la siguiente fila
         }
