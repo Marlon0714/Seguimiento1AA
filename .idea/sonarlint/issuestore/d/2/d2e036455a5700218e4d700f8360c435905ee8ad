@@ -1,7 +1,7 @@
 
 	java:S101
-"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ĞåŒ8ÁÅœ‘ç1J$89238381-77d4-4dfb-856d-79407c2b50e0
-¡	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(µîèåüÿÿÿÿ8ÃÅœ‘ç1J$6b6755ce-404e-459c-a2a4-fed147b44597
+"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ĞåŒ8»Ò…½ç1J$f4f15e68-4f2b-413d-9cdf-68961bd21e68
+¡	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(µîèåüÿÿÿÿ8½Ò…½ç1J$40fa920a-e415-4f3e-8123-c705582a47b6
 }
 java:S1118
-":Add a private constructor to hide the implicit public one.(ĞåŒ8ËÅœ‘ç1J$c2bcba9e-c849-4f32-b2ea-ed384217ff9d
+":Add a private constructor to hide the implicit public one.(ĞåŒ8ÍÒ…½ç1J$ce3f4305-79ed-4cf9-8b43-9bf1bd982c87
